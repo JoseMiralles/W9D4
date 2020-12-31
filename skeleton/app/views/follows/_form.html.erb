@@ -11,5 +11,7 @@
       name="authenticity_token"
       value="<%= form_authenticity_token %>">
   <input type="hidden" name="_method" value="delete">
-  <input class="follow-toggle" data-follow-state="<%=follows%>" data-id="<%=user.id%>" type="checkbox" <%= checked %> value="Unfollow">
+  <label><p id="checkbox_message_<%=user.id%>"></p>
+    <input class="follow-toggle" data-follow-state="<%=follows%>" data-id="<%=user.id%>" type="checkbox" <%= checked %> value="Unfollow">
+  </label>
 </form>
