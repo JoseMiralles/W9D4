@@ -13,8 +13,24 @@ function FollowToggle(cb){
     this.followState = cb.data("follow-state");
 
     this.cb.on("change",(e)=>{
-        console.log(e);
+        console.log("Click Listner");
+        $.ajax({
+            url: "/users/:id/follow",
+
+
+        })
+
     });
+}
+
+FollowToggle.prototype.render = function(){
+    let myString = ("Unfollow");
+    console.log( this);
+    if (this.followState) 
+        myString = "Following";
+
+    $p = $(`<p> ${myString} </p>`);
+    $p.insertAfter(this.cb);  
 }
 
 module.exports = {
@@ -54,10 +70,13 @@ module.exports = {
   !*** ./frontend/twitter.js ***!
   \*****************************/
 const {FollowToggle} = __webpack_require__(/*! ./follow_toggle.js */ "./frontend/follow_toggle.js");
-
+// window.FollowToggle = FollowToggle;
 $(()=>{
     $(".follow-toggle").each(function(i, el){
-        FollowToggle($(el));
+        const ele = $(el)
+        const toggleElement = new FollowToggle(ele);
+        toggleElement.render();
+        
     });
 })
 })();
