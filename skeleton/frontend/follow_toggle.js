@@ -1,28 +1,25 @@
+const APIUtil = require("./api_util");
+
 function FollowToggle(cb){
     this.cb = cb;
     this.userId = cb.data("id");
     this.followState = cb.data("follow-state");
 
     this.cb.on("change",(e)=>{
-
+        this.cb.attr("disabled", true);
         if (this.followState === false) {
-            this.followState = true;
-            this.render();
-            $.ajax({
-                url: `/users/${this.userId}/follow`,
-                // accept: ,
-                method: "POST",
-                // data: {user_id: this.userId},
-                dataType: "json"
+            APIUtil.followUser(this.userId)
+            .then(()=>{
+                this.followState = true;
+                this.render();
+                this.cb.removeAttr("disabled");
             });
         } else {
-            this.followState = false;
-            this.render();
-            $.ajax({
-                url: `/users/${this.userId}/follow`,
-                method: "DELETE",
-                // data: {user_id: this.userId},
-                dataType: "json"
+            APIUtil.unfollowUser(this.userId)
+            .then(()=>{
+                this.followState = false;
+                this.render();
+                this.cb.removeAttr("disabled");
             });
         }
 
@@ -31,7 +28,6 @@ function FollowToggle(cb){
 
 FollowToggle.prototype.render = function(){
     let myString = ("Unfollow");
-    console.log( this);
     if (this.followState) 
         myString = "Following";
     const p = $(`#checkbox_message_${this.userId}`);
